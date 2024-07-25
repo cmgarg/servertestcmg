@@ -21,20 +21,16 @@ const modelPajarito = model("pajaritos", schemaPajaritos);
 
 // Ejemplo de ruta GET
 router.get("/", (req: Request, res: Response) => {
-  res.send("Buenos dias a la casa de los pajaritos");
+  res.send("Buenos dias a la casa de los pajaritos y martin pelotudo");
 });
 
-router.get("/obtenerPajaritos", (req: Request, res: Response) => {
-  modelPajarito.find(
-    {},
-    (err: any, pajaritos: { name: string; habitat: string }[]) => {
-      if (err) {
-        res.status(500).send(err);
-      } else {
-        res.json(pajaritos);
-      }
-    }
-  );
+router.get("/obtenerPajaritos", async (req: Request, res: Response) => {
+  try {
+    const pajaritos = await modelPajarito.find({});
+    res.json(pajaritos);
+  } catch (err) {
+    res.status(500).send(err);
+  }
 });
 router.post("/agregarPajarito", (req: Request, res: Response) => {
   const pajarito = new modelPajarito(req.body);
