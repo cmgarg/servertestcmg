@@ -18,13 +18,21 @@ const schemaPajaritos = new Schema({
 });
 
 const modelPajarito = model("pajaritos", schemaPajaritos);
-
+//MARTIN COME PITO
 // Ejemplo de ruta GET
 router.get("/", (req: Request, res: Response) => {
   res.send("Buenos dias a la casa de los pajaritos y martin pelotudo");
 });
 
 router.get("/obtenerPajaritos", async (req: Request, res: Response) => {
+  try {
+    const pajaritos = await modelPajarito.find({});
+    res.json(pajaritos);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+router.get("/obtenerGatos", async (req: Request, res: Response) => {
   try {
     const pajaritos = await modelPajarito.find({});
     res.json(pajaritos);
