@@ -14,6 +14,7 @@ app.use(express.json());
 app.use("/api", routes);
 
 const connectDB = async () => {
+  console.log("CONECTANDO A", MONGODB_URI);
   try {
     await mongoose.connect(MONGODB_URI);
     console.log("MongoDB connected...");
