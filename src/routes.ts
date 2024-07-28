@@ -53,5 +53,6 @@ router.post("/agregarPajarito", (req: Request, res: Response) => {
 });
 
 // Aquí puedes añadir más rutas según necesites
+//PENE
 
 export default router;
