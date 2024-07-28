@@ -55,6 +55,6 @@ router.post("/agregarPajarito", (req: Request, res: Response) => {
 
 
 // Aquí puedes añadir más rutas según necesites
-//PENE se come gonzalo por las nalgas
+//PENE se come gonzalo por las nalgasasdasd
 
 export default router;
