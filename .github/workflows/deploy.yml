@@ -24,10 +24,10 @@ jobs:
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
         run: |
           ssh-keyscan -H $REMOTE_HOST >> ~/.ssh/known_hosts
-          ssh $REMOTE_USER@$REMOTE_HOST '
+          ssh -p5983 $REMOTE_USER@$REMOTE_HOST << 'EOF'
             cd /servertestcmg &&
             git pull origin main &&
             npm install &&
             npm run build &&
             pm2 restart tu-app
-          '
+          EOF
