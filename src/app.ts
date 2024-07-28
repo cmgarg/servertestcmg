@@ -4,7 +4,7 @@ import routes from "./routes";
 import dotenv from "dotenv";
 
 dotenv.config();
-
+//FALOPERO MARTIN
 const app: Application = express();
 const PORT = process.env.PORT || 3000;
 const MONGODB_URI =
@@ -14,6 +14,7 @@ app.use(express.json());
 app.use("/api", routes);
 
 const connectDB = async () => {
+  console.log("CONECTANDO A", MONGODB_URI);
   try {
     await mongoose.connect(MONGODB_URI);
     console.log("MongoDB connected...");

@@ -1,0 +1,33 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches:
+      - main # O la rama que deseas desplegar
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Deploy to Server
+        env:
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+        run: |
+          ssh-keyscan -H $REMOTE_HOST >> ~/.ssh/known_hosts
+          ssh $REMOTE_USER@$REMOTE_HOST '
+            cd /servertestcmg &&
+            git pull origin main &&
+            npm install &&
+            npm run build &&
+            pm2 restart tu-app
+          '
