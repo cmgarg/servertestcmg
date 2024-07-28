@@ -3,7 +3,7 @@ name: Deploy to Server
 on:
   push:
     branches:
-      - main # Puedes cambiar esto a la rama que prefieras
+      - main # O la rama que deseas desplegar
 
 jobs:
   deploy:
@@ -13,18 +13,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install dependencies
-        run: npm install # Cambia esto según el gestor de paquetes que utilices
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Build the project
-        run: npm run build # Cambia esto según el script de build que utilices
-
-      - name: Deploy to server
-        uses: easingthemes/ssh-deploy@v2.1.5
+      - name: Deploy to Server
         env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          ARGS: "-avz --delete"
-          SOURCE: "dist/" # Cambia esto según tu directorio de build
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
-          TARGET: "/path/to/your/deployment/directory" # Cambia esto según la ruta en tu servidor
+        run: |
+          ssh-keyscan -H $REMOTE_HOST >> ~/.ssh/known_hosts
+          ssh $REMOTE_USER@$REMOTE_HOST '
+            cd /ruta/a/tu/proyecto &&
+            git pull origin main &&
+            npm install &&
+            npm run build &&
+            pm2 restart tu-app
+          '
