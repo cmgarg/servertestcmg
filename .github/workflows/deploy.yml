@@ -27,9 +27,9 @@ jobs:
         run: |
           echo "REMOTE_HOST: ${{ secrets.REMOTE_HOST }}"
           echo "REMOTE_USER: ${{ secrets.REMOTE_USER }}"
-          ssh-keyscan -H ${{ secrets.REMOTE_HOST }} >> ~/.ssh/known_hosts
+          ssh-keyscan -H ${{ secrets.REMOTE_HOST }} >> ~/.ssh/known_hosts || exit 1
           cat ~/.ssh/known_hosts
-          ssh -vvv -p5983 ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} 'echo "SSH connection successful"'
+          ssh -vvv -p5983 ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} 'echo "SSH connection successful"' || exit 1
 
       - name: Deploy to Server
         env:
@@ -42,4 +42,4 @@ jobs:
             npm install &&
             npm run build &&
             pm2 restart tu-app
-          EOF
+          EOF || exit 1
