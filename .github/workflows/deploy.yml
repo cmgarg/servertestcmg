@@ -18,12 +18,24 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+      - name: Show current directory and files
+        run: |
+          pwd
+          ls -la
+
+      - name: Debugging SSH connection
+        run: |
+          echo "REMOTE_HOST: $REMOTE_HOST"
+          echo "REMOTE_USER: $REMOTE_USER"
+          ssh-keyscan -H $REMOTE_HOST >> ~/.ssh/known_hosts
+          cat ~/.ssh/known_hosts
+          ssh -vvv -p5983 $REMOTE_USER@$REMOTE_HOST 'echo "SSH connection successful"'
+
       - name: Deploy to Server
         env:
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
         run: |
-          ssh-keyscan -H $REMOTE_HOST >> ~/.ssh/known_hosts
           ssh -p5983 $REMOTE_USER@$REMOTE_HOST << 'EOF'
             cd /servertestcmg &&
             git pull origin main &&
