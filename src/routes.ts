@@ -45,7 +45,9 @@ router.post("/agregarPajarito", (req: Request, res: Response) => {
   pajarito
     .save()
     .then(() => {
-      res.send("Pajarito agregado correctamente CHOTAS MARTIN SE LA COMEEE");
+      res.send(
+        "Pajarito agregado correctamente CHOTAS MARTIN SE LA COMEEE DASDASDAS"
+      );
     })
     .catch((err) => {
       res.send(err.body);
