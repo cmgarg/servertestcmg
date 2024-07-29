@@ -25,8 +25,8 @@ jobs:
 
       - name: Debugging SSH connection
         env:
-          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+          REMOTE_HOST: 149.50.142.90
+          REMOTE_USER: root
         run: |
           echo "REMOTE_HOST: $REMOTE_HOST"
           echo "REMOTE_USER: $REMOTE_USER"
@@ -36,8 +36,8 @@ jobs:
 
       - name: Deploy to Server
         env:
-          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+          REMOTE_HOST: 149.50.142.90
+          REMOTE_USER: root
         run: |
           ssh -p5983 $REMOTE_USER@$REMOTE_HOST << 'EOF'
             cd servertestcmg &&
