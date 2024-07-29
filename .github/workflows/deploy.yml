@@ -30,6 +30,19 @@ jobs:
         run: |
           echo "REMOTE_HOST: $REMOTE_HOST"
           echo "REMOTE_USER: $REMOTE_USER"
-          ssh-keyscan -H $REMOTE_HOST >> ~/.ssh/known_hosts || exit 1
+          ssh-keyscan -H $REMOTE_HOST >> ~/.ssh/known_hosts || { echo 'ssh-keyscan failed' ; exit 1; }
           cat ~/.ssh/known_hosts
-          ssh -vvv -p5983 $REMOTE_USER@$REMOTE_HOST 'echo "SSH connection successful"' || exit 1
+          ssh -vvv -p5983 $REMOTE_USER@$REMOTE_HOST 'echo "SSH connection successful"' || { echo 'SSH connection failed' ; exit 1; }
+
+      - name: Deploy to Server
+        env:
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+        run: |
+          ssh -p5983 $REMOTE_USER@$REMOTE_HOST << 'EOF'
+            cd /servertestcmg &&
+            git pull origin main &&
+            npm install &&
+            npm run build &&
+            pm2 restart tu-app
+          EOF
