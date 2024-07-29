@@ -25,11 +25,11 @@ jobs:
 
       - name: Debugging SSH connection
         run: |
-          echo "REMOTE_HOST: $REMOTE_HOST"
-          echo "REMOTE_USER: $REMOTE_USER"
-          ssh-keyscan -H $REMOTE_HOST >> ~/.ssh/known_hosts
+          echo "REMOTE_HOST: ${{ secrets.REMOTE_HOST }}"
+          echo "REMOTE_USER: ${{ secrets.REMOTE_USER }}"
+          ssh-keyscan -H ${{ secrets.REMOTE_HOST }} >> ~/.ssh/known_hosts
           cat ~/.ssh/known_hosts
-          ssh -vvv -p5983 $REMOTE_USER@$REMOTE_HOST 'echo "SSH connection successful"'
+          ssh -vvv -p5983 ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} 'echo "SSH connection successful"'
 
       - name: Deploy to Server
         env:
