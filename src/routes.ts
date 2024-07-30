@@ -18,7 +18,7 @@ const schemaPajaritos = new Schema({
 });
 
 const modelPajarito = model("pajaritos", schemaPajaritos);
-//MARTIN COME PITO
+//MARTIN COME PITOoooooooooooooooooooo
 // Ejemplo de ruta GET
 router.get("/", (req: Request, res: Response) => {
   res.send("Buenos dias a la casa de los pajaritos y martin pelotudo");
