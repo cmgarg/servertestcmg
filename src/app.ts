@@ -1,31 +1,39 @@
-import express, { Application } from "express";
-import mongoose from "mongoose";
-import routes from "./routes";
-import dotenv from "dotenv";
+import express, { Application, Request, Response } from 'express';
+import dotenv from 'dotenv';
+import http from 'http';
+import { Server } from 'socket.io';
 
 dotenv.config();
-//FALOPERO MARTIN
+
 const app: Application = express();
+const server = http.createServer(app);
+const io = new Server(server);
+
 const PORT = process.env.PORT || 3000;
-const MONGODB_URI =
-  process.env.MONGODB_URI || "mongodb://localhost:27017/pajaritos";
 
 app.use(express.json());
-app.use("/api", routes);
 
-const connectDB = async () => {
-  console.log("CONECTANDO A", MONGODB_URI);
-  try {
-    await mongoose.connect(MONGODB_URI);
-    console.log("MongoDB connected...");
-  } catch (err) {
-    console.error(err);
-    process.exit(1);
-  }
-};
-
-connectDB();
-
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+io.on('connection', (socket) => {
+  console.log('Usuario conectado');
+
+  // Enviar notificación de prueba cuando se conecta un usuario
+  socket.emit('notification', { message: 'Bienvenido a la aplicación!' });
+
+  // Manejar desconexión de usuario
+  socket.on('disconnect', () => {
+    console.log('Usuario desconectado');
+  });
+});
+
+// Ruta para enviar una notificación
+app.post('/send-notification', (req: Request, res: Response) => {
+  const { message } = req.body;
+  io.emit('notification', { message });
+  res.send('Notificación enviada');
+});
+
+export { io };
