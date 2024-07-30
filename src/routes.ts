@@ -45,16 +45,16 @@ router.post("/agregarPajarito", (req: Request, res: Response) => {
   pajarito
     .save()
     .then(() => {
-      res.send("Pajarito agregado correctamente");
+      res.send(
+        "Pajarito agregado correctamente CHOTAS MARTasdIN SE LAASSWEQWEQWE COMEEE assswwweeerrreeDASasdDASDASaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaasadasdasdasdaaaaaaaaaaaaaaaa"
+      );
     })
     .catch((err) => {
       res.send(err.body);
     });
 });
 
-
-
-// Aquí puedes añadir más rutas según necesites
-//PENE se come gonzalo por las nalgasasdasd
+// Aquí puedes añadir más rutas según necesites//////////////////TT
+//PENE
 
 export default router;

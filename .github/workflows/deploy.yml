@@ -3,7 +3,7 @@ name: Deploy to Server
 on:
   push:
     branches:
-      - main # O la rama que deseas desplegar
+      - main
 
 jobs:
   deploy:
@@ -18,14 +18,29 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+      - name: Show current directory and files
+        run: |
+          pwd
+          ls -al
+
+      - name: Debugging SSH connection
+        env:
+          REMOTE_HOST: 149.50.142.90
+          REMOTE_USER: root
+        run: |
+          echo "REMOTE_HOST: $REMOTE_HOST"
+          echo "REMOTE_USER: $REMOTE_USER"
+          ssh-keyscan -H $REMOTE_HOST >> ~/.ssh/known_hosts || { echo 'ssh-keyscan failed' ; exit 1; }
+          cat ~/.ssh/known_hosts
+          ssh -vvv -p5983 $REMOTE_USER@$REMOTE_HOST 'echo "SSH connection successful"' || { echo 'SSH connection failed' ; exit 1; }
+
       - name: Deploy to Server
         env:
-          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+          REMOTE_HOST: 149.50.142.90
+          REMOTE_USER: root
         run: |
-          ssh-keyscan -H $REMOTE_HOST >> ~/.ssh/known_hosts
           ssh -p5983 $REMOTE_USER@$REMOTE_HOST << 'EOF'
-            cd /servertestcmg &&
+            cd servertestcmg &&
             git pull origin main &&
             npm install &&
             npm run build &&
