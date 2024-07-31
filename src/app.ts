@@ -10,7 +10,7 @@ const app: Application = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000", // Cambia esto a tu URL frontend
+    origin: "http://localhost:3000/dist-vite/index.html", // Cambia esto a tu URL frontend
     methods: ["GET", "POST"]
   }
 });
@@ -18,7 +18,7 @@ const io = new Server(server, {
 const PORT = process.env.PORT || 3000;
 
 app.use(cors({
-  origin: "http://localhost:3000" // Cambia esto a tu URL frontend
+  origin: "http://localhost:3000/dist-vite/index.html" // Cambia esto a tu URL frontend
 }));
 
 app.use(express.json());
