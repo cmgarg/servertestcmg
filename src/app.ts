@@ -18,7 +18,7 @@ const io = new Server(server, {
 const PORT = process.env.PORT || 3000;
 
 app.use(cors({
-  origin: "http://localhost:3000" // Cambia esto a tu URL frontend
+  origin: "http://localhost:3001" // Cambia esto a tu URL frontend
 }));
 
 app.use(express.json());
